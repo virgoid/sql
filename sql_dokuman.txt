@@ -1,0 +1,432 @@
+duplikat
+
+INSERT INTO table_listnames (name, address, tele)
+VALUES ('Rupert', 'Somewhere', '022')
+WHERE NOT EXISTS (
+    SELECT name FROM table_listnames WHERE name='value'
+);
+
+
+
+
+INSERT INTO `tableA` (`field_one`, `field_two`) 
+   SELECT `tableB`.`field_one`, `tableB`.`field_two` 
+   FROM `tableB` 
+   WHERE `tableB`.clmn <> 'someValue'
+   ORDER BY `tableB`.`sorting_clmn`;
+   
+   
+   INSERT INTO table_name1
+      (col1, col2, col3, coL4) 
+SELECT colA, colB, colC, colD FROM table_name2 WHERE condition;  
+
+
+UPDATE inbox
+SET status = value1, column2 = value2, ...
+WHERE condition;
+
+daftar dosen.txt
+
+0160436012,Sabrina Sari,0812349900,Pekanbaru
+0260432002,Maya Ari Putri,0812342342,Palembang
+0275430005,Susi Indriani,0812656532,Bogor
+0480432066,Tia Santrini,0812451177,Padang
+0576431001,M. Siddiq,0812979005,Jakarta
+0770435006,Rubin Hadi,0812567678,Papua
+0869437003,Mustalifah,0812338877,Aceh
+1080432007,Arif Budiman,0812456345,Makasar
+0785531001,Siswanto,0852878006,Padang
+0867221006,Rudi Arwana,0823987598,Jakarta
+0173551078,Aria Sulistya,0880743523,Jakarta
+0360432014,Suci Syuhada,0812341122,Palembang
+
+
+
+mysql> TRUNCATE daftar_dosen;
+Query OK, 0 rows affected (0.05 sec)
+ 
+mysql> LOAD DATA INFILE 'D:\MySQL\daftar_dosen.txt'
+INTO TABLE daftar_dosen
+FIELDS TERMINATED BY ','  LINES TERMINATED BY '\r\n';
+Query OK, 12 rows affected (0.04 sec)
+Records: 12  Deleted: 0  Skipped: 0  Warnings: 0
+ 
+mysql> SELECT * FROM daftar_dosen;
++------------+----------------+------------+-----------+
+| NIP_dosen  | nama_dosen     | no_hp      | alamat    |
++------------+----------------+------------+-----------+
+| 0160436012 | Sabrina Sari   | 0812349900 | Pekanbaru |
+| 0173551078 | Aria Sulistya  | 0880743523 | Jakarta   |
+| 0260432002 | Maya Ari Putri | 0812342342 | Palembang |
+| 0275430005 | Susi Indriani  | 0812656532 | Bogor     |
+| 0360432014 | Suci Syuhada   | 0812341122 | Palembang |
+| 0480432066 | Tia Santrini   | 0812451177 | Padang    |
+| 0576431001 | M. Siddiq      | 0812979005 | Jakarta   |
+| 0770435006 | Rubin Hadi     | 0812567678 | Papua     |
+| 0785531001 | Siswanto       | 0852878006 | Padang    |
+| 0867221006 | Rudi Arwana    | 0823987598 | Jakarta   |
+| 0869437003 | Mustalifah     | 0812338877 | Aceh      |
+| 1080432007 | Arif Budiman   | 0812456345 | Makasar   |
++------------+----------------+------------+-----------+
+12 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT alamat FROM daftar_dosen ORDER BY alamat;
++-----------+
+| alamat    |
++-----------+
+| Aceh      |
+| Bogor     |
+| Jakarta   |
+| Makasar   |
+| Padang    |
+| Palembang |
+| Papua     |
+| Pekanbaru |
++-----------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT nama_dosen,alamat FROM daftar_dosen 
+ORDER BY alamat;
++----------------+-----------+
+| nama_dosen     | alamat    |
++----------------+-----------+
+| Mustalifah     | Aceh      |
+| Susi Indriani  | Bogor     |
+| Aria Sulistya  | Jakarta   |
+| M. Siddiq      | Jakarta   |
+| Rudi Arwana    | Jakarta   |
+| Arif Budiman   | Makasar   |
+| Siswanto       | Padang    |
+| Tia Santrini   | Padang    |
+| Maya Ari Putri | Palembang |
+| Suci Syuhada   | Palembang |
+| Rubin Hadi     | Papua     |
+| Sabrina Sari   | Pekanbaru |
++----------------+-----------+
+12 rows in set (0.06 sec)
+
+mysql> DELETE from daftar_dosen ORDER BY nama_dosen DESC LIMIT 3;
+Query OK, 3 rows affected (0.04 sec)
+ 
+mysql> SELECT * FROM daftar_dosen ORDER BY nama_dosen;
++------------+----------------+------------+-----------+
+| NIP_dosen  | nama_dosen     | no_hp      | alamat    |
++------------+----------------+------------+-----------+
+| 1080432007 | Arif Budiman   | 0812456345 | Makasar   |
+| 0576431001 | M. Siddiq      | 0812979005 | Jakarta   |
+| 0260432002 | Maya Ari Putri | 0812345234 | Palembang |
+| 0869437003 | Mustalifah     | 0812338877 | Aceh      |
+| 0770435006 | Rubin Hadi     | 0812567678 | Papua     |
++------------+----------------+------------+-----------+
+5 rows in set (0.00 sec)
+
+
+jumlah record/baris
+mysql> DELETE FROM daftar_dosen;
+Query OK, 5 rows affected (0.04 sec)
+
+
+hapus isi record/baris 
+mysql> TRUNCATE TABLE daftar_dosen;
+Query OK, 0 rows affected (0.04 sec)
+ 
+mysql> SELECT * FROM daftar_dosen;
+Empty set (0.00 sec)
+
+
+<?php
+// koneksi
+$koneksi= mysqli_connect("localhost","root","");
+mysqli_select_db($koneksi,"db_suckittrees");
+
+$lama = 1; // lama data yang tersimpan di database dan akan otomatis terhapus setelah 1 hari
+
+// proses untuk melakukan penghapusan data
+
+$query = "DELETE FROM transaksi
+          WHERE DATEDIFF(CURDATE(), tgl_transaksi) > $lama";
+$hasil = mysqli_query($koneksi,$query);
+?>
+
+
+Syntax
+
+SCHTASKS /CREATE /SC DAILY /TN "FOLDERPATH\TASKNAME" /TR "C:\SOURCE\FOLDER\APP-OR-SCRIPT" /ST HH:MM
+
+Example
+
+SCHTASKS /CREATE /SC DAILY /TN "MyTasks\Notepad task" /TR "C:\Windows\System32\notepad.exe" /ST 11:00
+
+
+
+process.bat
+
+@ECHO OFF
+start   /b cm.bat
+start  cmd.exe /c run.bat
+EXIT
+cm.bat
+
+@ECHO OFF
+a.exe < input.txt > out.txt
+taskkill /im a.exe /f
+taskkill /im cmd.exe /f
+EXIT
+run.bat
+
+@ECHO off
+timeout /t 5
+taskkill /im a.exe /f 
+taskkill /im cmd.exe /f
+
+EXIT
+
+
+:loop
+
+mysql.exe -uroot -p
+USE wagw;
+INSERT INTO outbox(wa_mode,wa_no,wa_text) SELECT wa_mode,sub_no,wa_text FROM inbox WHERE status=0;  
+UPDATE inbox SET status = 1  WHERE status=0;
+quit
+timeout /t 5
+goto :loop
+
+
+Set _seconds=0
+:waitloop
+  :: Wait for 10 seconds
+  Set /a "_seconds=_seconds+10">nul
+  PING -n 11 127.0.0.1>nul
+  :: If 600 seconds have elapsed exit the loop
+  if %_seconds%==600 goto nextstep
+  if not exist \\Server64\updates\monday.csv goto waitloop
+:nextstep 
+
+
+
+
+
+mysql.exe -uroot -p
+USE wagw;
+INSERT INTO outbox(wa_mode,wa_no,wa_text) SELECT wa_mode,sub_no,wa_text FROM inbox WHERE status=0;  
+UPDATE inbox SET status = 1  WHERE status=0;
+
+
+
+
+
+SELECT * FROM tabel_a WHERE NOT EXISTS (SELECT * FROM tabel_b)
+
+SELECT * FROM tabel_a WHERE NOT EXISTS (SELECT * FROM tabel_b WHERE tabel_a.key = tabel_b.key)
+
+SELECT * FROM tbl_matakuliah WHERE jurusan='$_SESSION[jurusan]' AND kd_matakuliah NOT IN (SELECT kd_matakuliah FROM tbl_nilai WHERE nim = '$d[nim]'
+ 
+
+
+IF  (EXISTS(SELECT * FROM facebookqs WHERE email = '$email')) THEN
+  UPDATE facebookqs SET correct = correct + '$correct' WHERE email ='$email';
+ELSE
+  INSERT INTO facebookqs (email, correct) VALUES ('$email', '$correct');
+END IF;
+
+
+SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
+FROM Orders
+INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+
+
+
+
+
+
+Customers
+
+CustomerID	  CustomerName	    ContactName	    Address	        City	       PostalCode	Country
+1 Alfreds     Futterkiste	    Maria Anders	Obere Str. 57	Berlin	       12209	     Germany
+2 Ana         Trujillo          Emparedados y   helados	        Ana Trujillo	             Avda. de la Constitución 2222	México D.F.	05021	Mexico
+3 Antonio     Moreno Taquería	Antonio Moreno	Mataderos 2312	México D.F.	    05023	     Mexico
+And a selection from the "Suppliers" table:
+
+Suppliers
+
+SupplierID	SupplierName	ContactName	 Address	  City	Postal Code	Country
+1	        Exotic Liquid	Charlotte    Cooper	49     Gilbert St.	Londona	EC1 4SD	UK
+2	        New Orleans     Cajun        Delights	  Shelley Burke	P.O. Box 78934	New Orleans	70117	USA
+3	        Grandma Kelly's Homestead	Regina Murphy	707 Oxford Rd.	Ann Arbor	48104	USA
+
+
+
+
+INSERT INTO Customers (CustomerName, City, Country)
+SELECT SupplierName, City, Country FROM Suppliers
+WHERE Country='Germany';
+
+
+SELECT COUNT(colom name) FROM (tabel name ) WHERE condisi;
+SELECT sumcolom name) FROM (tabel name ) WHERE condisi;
+SELECT avgcolom name) FROM (tabel name ) WHERE condisi;
+
+SELECT SUM(scorer) as sum_scorer from game;
+
+SELECT SUM(scorer) as sum_scorer from game;
+SELECT SUM(h_benar) as benar from tb_outbox;
+
+
+$sql="select *from $tabel";
+$query=mysql_query($sql);
+$count =mysql_num_row($query);
+echo " jumlah data dengan mysql_num_row :$count
+
+
+
+==========
+
+ $jml="SELECT * FROM tb_outbox ";
+   $hasil=mysql_query($koneksi,$jml);
+   $count =mysql_num_rows($koneksi,$hasil);
+   
+   
+echo " jumlah data dengan mysql_num_row :$count";
+
+
+ echo"  <br>";
+$sql="SELECT count(*) AS jumlah FROM outbox";
+$query33=mysql_query($koneksi,$sql);
+$result=mysql_fetch_array($query33);
+echo " jumlah : {$result['jumlah']}";
+   
+   
+echo"  <br>";   
+   
+$sql45="SELECT count(*)  FROM tb_outbox";
+$query33=mysql_query($koneksi,$sql45);  
+$data=array($query33);
+//while(($now= mysql_fetch_arry($query)) != null){
+//$data[]=$row;
+//}
+$count1=count($data);
+echo"jumlah:  $count1";
+   
+   
+============
+
+
+
+if
+($result=mysqli_query($com,$sql))
+{
+$rowcount=mysql_num_rows($restult);
+printf("Resultan setbhas %d rows .\n",$rowcount);
+mysql_free_result($result);
+}
+
+
+
+
+if
+($result = mysqli_query($koneksi,$sql))
+{
+$hasil=mysql_query($sql);
+$rowcount=mysql_num_rows($hasil);
+printf("Resultan setbhas %d rows .\n",$rowcount);
+mysql_free_result($result);
+}
+
++62 856-9296-1782
+
+
+
+Menghapus Karakter Lain Selain Huruf
+
+
+Sebagai contoh, kita akan mengambil isi dari sebuah string dan menghapus semua karakter kecuali huruf (huruf kecil "a-z", dan huruf besar "A-Z"), maka regular expressionnya adalah:
+
+
+
+
+$result = preg_replace("/[^a-zA-Z]/", "", $string);
+
+Contoh implementasinya:
+
+$string = "Suka*()bumi #$^%&87 Kode ()*(&*^6.";
+$result = preg_replace("/[^a-zA-Z]/", "", $string);
+echo $result;
+
+
+
+Ketika kode tersebut dijalankan, maka yang akan tampil adalah:
+SukabumiKode
+
+Menghapus Karakter Lain Selain Angka
+Untuk menghapus semua karakter selain angka, maka kita bisa menggunakan regular expression berikut:
+
+$result = preg_replace("/[^0-9]/", "", $string);
+Contoh implementasinya:
+
+
+$string = "Suka2*()bumi #$^%&0 Kode ()*(&*^19.";
+$result = preg_replace("/[^0-9]/", "", $string);
+echo $result;
+
+Sehingga output dari script php tersebut adalah:
+2019
+
+Menghapus Karakter Lain Selain Huruf dan Angka
+Ketika kita ingin mengambil isi dari sebuah string yang hanya berupa huruf dan angka, maka kita bisa menggunakan fungsi berikut:
+
+
+
+$result = preg_replace("/[^a-zA-Z0-9]/", "", $string);
+
+
+Contoh implementasinya:
+
+
+
+$string = "Suka*()bumi #$^%& Kode ($%^2&^)*(0&*^19.";
+$result = preg_replace("/[^a-zA-Z0-9]/", "", $string);
+echo $result;
+
+Sehingga output yang dihasilkan adalah:
+SukabumiKode2019
+
+
+Function built in MySQL yang dapat kita manfaatkan adalah TRIM. Berikut cara penggunaannya...
+Syntax of TRIM():
+
+TRIM([{BOTH | LEADING | TRAILING} [remstr] FROM] str), TRIM([remstr FROM] str)
+
+Contohnya:
+
+SELECT TRIM(' tudabit ku'); --> ada spasi didepan
+
+akan menghasilkan kata tudabit ku dengan spasi yang sudah dihilangkan (default fungsi TRIM)
+
+SELECT TRIM(LEADING 's' FROM 'sssbarrsss');
+
+akan menghasilkan kata barrsss dimana s didepan dihilangkan
+
+SELECT TRIM(BOTH 'x' FROM 'xxxbarxxx');
+
+akan menghasilkan kata bar dimana huruf x dihilangkan baik yg didepan maupun dibelakang
+
+SELECT TRIM(TRAILING ',' FROM 'Senin,Selasa,Rabu,');
+
+
+akan menghasilkan kata Senin,Selasa,Rabu dimana tanda ( , ) dibelakang Rabu dihilangkan
+
+
+
+Untuk hanya memangkas ruang trailing yang harus Anda gunakan
+
+UPDATE
+    TableName
+SET
+    ColumnName = RTRIM(ColumnName)
+Namun, jika Anda ingin memotong semua ruang depan dan belakang, gunakan ini
+
+UPDATE
+    TableName
+SET
+    ColumnName = LTRIM(RTRIM(ColumnName))
